@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      #map { height: 100%; width: 100%}
+    </style>
+    <link rel="stylesheet" href="style/style.css">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Disneyland Map</title>
+  </head>
+  <body>
+    <h1>Welcome To Disneyland</h1>
+    <div id="weather"></div>
+    <b>Place: </b>
+      <input type="text" data-bind="textInput: filter" placeholder="Search for places...">
+      <ul style="list-style-type:none" data-bind="foreach: filteredPoi">
+        <li data-bind="text: name, click: $parent.showLocation"></li>
+     </ul>
+    </div>
+    <div id="map"></div>
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+   <script src="js/knockout-3-4-min.js"></script>
+   <script src="js/disney_map.js"></script>
+   <script async defer
+   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB91rbmngUT9m-wavGo8yhW4Yq-mdNBhlk&callback=initMap" onerror="googleError()">
+   </script>
+ </body>
+</html>
