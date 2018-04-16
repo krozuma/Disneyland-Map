@@ -11,10 +11,10 @@
   </head>
   <body>
     <h1>Welcome To Disneyland</h1>
-    <div id="weather"></div>
+    <div id="weather" data-bind="html: weatherData"></div>
     <b>Place: </b>
       <input type="text" data-bind="textInput: filter" placeholder="Search for places...">
-      <ul style="list-style-type:none" data-bind="foreach: filteredPoi">
+      <ul data-bind="foreach: filteredPoi">
         <li data-bind="text: name, click: $parent.showLocation"></li>
      </ul>
     </div>
