@@ -1,12 +1,23 @@
+var icon;
+var temp_f;
+var initMap;
+var map;
+var locations = ko.observableArray();
+var visibleLocations = ko.observableArray();
+var viewModel;
+var ears;
+var infoWindowContent;
+var animateMarkers;
+
 //Loads weather data using the weatherundergound API
 jQuery(document).ready(function ($) {
   $.ajax({
         url : "http://api.wunderground.com/api/f083a3bbb58e8dc8/geolookup/conditions/q/CA/anaheim.json",
         dataType : "jsonp",
         success : function (parsed_json) {
-            var icon = parsed_json['current_observation']['icon_url'];
-            var temp_f = parsed_json['current_observation']['temp_f'];
-            $("#weather").html("<p>Current conditions in Disneyland are: " + "<img src=" + icon + ">" + temp_f + "&#8457 </p>");
+            icon = parsed_json['current_observation']['icon_url'];
+            temp_f = parsed_json['current_observation']['temp_f'];
+            viewModel.weatherData("<p>Current conditions in Disneyland are: " + "<img src=" + icon + ">" + temp_f + "&#8457</p>");
         }
     });
 });
@@ -18,14 +29,6 @@ var locationList =  [{name: "Radiator Springs Racers", location: {lat: 33.8052, 
                     {name: "Peter Pan's Flight", location: {lat: 33.81312, lng: -117.9189}},
                     {name: "Grizzly River Run", location: {lat: 33.80751, lng: -117.9208}},
                     {name: "Toy Story Midway Mania!", location: {lat: 33.804592, lng: -117.921725}}];
-
-var initMap;
-var map;
-var locations = ko.observableArray();
-var visibleLocations = ko.observableArray();
-var viewModel;
-var infoWindowContent;
-var animateMarkers;
 
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
@@ -40,7 +43,7 @@ function initMap() {
             marker.setAnimation(google.maps.Animation.BOUNCE);
             setTimeout(function () {
                 marker.setAnimation(null);
-            }, 1600);
+            }, 1650);
         }
     }
 
@@ -70,6 +73,7 @@ ko.applyBindings(viewModel);
 
 }
 
+//Loads the marker infowindow with info from the Foursquare API
 function populateInfoWindow(marker, infowindow) {
   $.ajax({
         url: "https://api.foursquare.com/v2/venues/search",
@@ -109,10 +113,12 @@ function poi(place) {
   var self = this;
     self.name = place.name;
     self.location = place.location;
+    ears = "http://www.adiumxtras.com/images/thumbs/mickey_mouse_icon_set_1_31744_7870_thumb.png";
     self.marker = new google.maps.Marker({
         position: place.location,
         map: map,
         title: place.name,
+        icon: ears,
         animation: google.maps.Animation.DROP,
         content: ""
 
@@ -127,12 +133,17 @@ function googleError() {
 var ViewModel = function () {
   var self = this;
 
+  self.weatherData = ko.observable()
+
   self.filter = ko.observable('');
 
+     //Triggers marker annimation and opens infowindow of the marker that
+     //corresponds to the list item
      self.showLocation = function (locations) {
             google.maps.event.trigger(locations.marker, 'click');
         };
 
+     //removes filtered list itme and its map marker
       self.filteredPoi = ko.computed(function () {
             var filter = self.filter().toLowerCase();
             if (!filter) {
