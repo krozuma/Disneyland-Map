@@ -33,7 +33,7 @@ var locationList =  [{name: "Radiator Springs Racers", location: {lat: 33.8052, 
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 33.810397, lng: -117.91958033},
-        zoom: 14
+        zoom: 15
     });
 
     function animateMarkers(marker) {
