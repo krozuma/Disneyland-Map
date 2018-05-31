@@ -139,6 +139,7 @@ var ViewModel = function () {
 
      //Triggers marker annimation and opens infowindow of the marker that
      //corresponds to the list item
+     //Thanks goes to Udacity mentors who explain how to implement this
      self.showLocation = function (locations) {
             google.maps.event.trigger(locations.marker, 'click');
         };
