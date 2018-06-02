@@ -18,6 +18,9 @@ jQuery(document).ready(function ($) {
             icon = parsed_json['current_observation']['icon_url'];
             temp_f = parsed_json['current_observation']['temp_f'];
             viewModel.weatherData("<p>Current conditions in Disneyland are: " + "<img src=" + icon + ">" + temp_f + "&#8457</p>");
+        },
+        error: function () {
+            alert("Data error");
         }
     });
 });
@@ -50,8 +53,7 @@ function initMap() {
     for (var i = 0; i < locationList.length; i++) {
     var spot = new poi(locationList[i]);
     locations().push(spot);
-
-}
+    }
 
 var googleMapsInfowindow = new google.maps.InfoWindow();
 
@@ -90,10 +92,9 @@ function populateInfoWindow(marker, infowindow) {
 
             var address = data.response.venues[0].location.formattedAddress[0];
             var businessName = data.response.venues[0].name;
-            var link = data.response.venues[0].url;
 
             var content = "<h1>" + businessName + "</h1><br><p>" +
-                address + "</p><br><a href=" + link + ">" + link + "</a>";
+                address;
 
             infowindow.setContent(content);
 
@@ -157,16 +158,9 @@ var ViewModel = function () {
 
               var match = ko.utils.arrayFilter(locations(), function (item) {
                 var search = item.name.toLowerCase().indexOf(filter) !== -1;
+                item.marker.setVisible(search)
                 return search;
             });
-            for (var a = 0; a < locations().length; a++) {
-              locations()[a].marker.setVisible(false);
-
-              }
-              for (var b = 0; b < match.length; b++) {
-                match[b].marker.setVisible(true);
-              }
-              return match;
-          }
+            }
       });
   };
