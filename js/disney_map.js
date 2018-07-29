@@ -12,12 +12,16 @@ var animateMarkers;
 //Loads weather data using the weatherundergound API
 jQuery(document).ready(function ($) {
   $.ajax({
-        url : "http://api.wunderground.com/api/f083a3bbb58e8dc8/geolookup/conditions/q/CA/anaheim.json",
+        url : "http://api.openweathermap.org/data/2.5/weather?id=5323810&units=imperial&appid=d4e70d2dd55fe0b0e50b46a61b5a5a46",
         dataType : "jsonp",
         success : function (parsed_json) {
-            icon = parsed_json['current_observation']['icon_url'];
-            temp_f = parsed_json['current_observation']['temp_f'];
-            viewModel.weatherData("<p>Current conditions in Disneyland are: " + "<img src=" + icon + ">" + temp_f + "&#8457</p>");
+            icon = parsed_json['weather']['0']['icon'];
+            temp_f = parsed_json['main']['temp'];
+            clouds = parsed_json['clouds']['all'];
+            var iconUrl = "http://openweathermap.org/img/w/" + icon + ".png";
+            viewModel.weatherData("<p>Current weather in Disneyland is: " +
+             "<img src=" + iconUrl + "> &#124; " + "Cloud Coverage: " + clouds + "% &#124; " +
+              "Temperature: " + temp_f + "&#8457</p>");
         },
         error: function () {
             alert("Data error");
